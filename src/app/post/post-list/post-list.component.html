@@ -8,7 +8,15 @@
     <mat-action-row>
         <button mat-button color="primary">EDITE</button>
         <button mat-button color="warn">DELETE</button>
-      </mat-action-row>
+    </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
 <p class="info-text mat-body-1" *ngIf="posts.length <= 0">No posts added yet!</p>
+<div *ngIf='comment; else noComment' >
+  Comment: {{comment[0]}} + {{comment[1]}}
+</div>
+<ng-template #noComment>no comment</ng-template>
+<div [ngSwitch]="comment[0]">
+  <div *ngSwitchCase="'first'">this is the first</div>
+  <div *ngSwitchDefault>the other</div>
+</div>
