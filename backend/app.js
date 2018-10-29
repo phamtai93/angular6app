@@ -49,10 +49,11 @@ app.post("/api/posts", (req, res, next) => {
     title: req.body.title,
     content: req.body.content
   });
-  post.save();
-  console.log(post);
-  res.status(201).json({
-    message: 'Post added sucessfully'
+  post.save().then(resultedPost => {
+    res.status(201).json({
+      message: 'Post added sucessfully',
+      postId: resultedPost._id
+    });
   });
 });
 
@@ -63,10 +64,16 @@ app.get('/api/posts', (req, res, next) => {
       posts: documents
     });
   });
-
-
 });
 
+//
+app.delete("/api/posts/:id", (req, res, next) => {
+  console.log(req.params.id);
+  Post.deleteOne({_id: req.params.id}).then(result => {
+    console.log(result);
+    res.status(200).json({message: "Post deleted"});
+  })
+});
 // app.use((req, res, next) => {
 //   res.send('Hello from express');
 // });
