@@ -3,6 +3,7 @@
     "node_modules/codelyzer"
   ],
   "rules": {
+    "defaultSeverity": "warning",
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,
@@ -86,7 +87,7 @@
     "prefer-const": true,
     "quotemark": [
       true,
-      "single"
+      "double"
     ],
     "radix": true,
     "semicolon": [
