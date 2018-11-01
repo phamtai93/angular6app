@@ -16,6 +16,7 @@ export class PostCreateComponent implements OnInit {
   post: Post;
   isLoading = false;
   form: FormGroup;
+  imagePreview: string;
   private mode = "create";
   private postId: string;
 
@@ -31,7 +32,8 @@ export class PostCreateComponent implements OnInit {
       }),
       content: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
-      })
+      }),
+      image: new FormControl(null, {validators: [Validators.required]})
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("postId")) {
@@ -56,6 +58,17 @@ export class PostCreateComponent implements OnInit {
         this.post = { id: null, title: null, content: null };
       }
     });
+  }
+
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({image: file});
+    this.form.get("image").updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {  // use reader and define an onLoad event here, which will just be a function that gets execute it
+      this.imagePreview = <string> reader.result; // this function is excuted when it's done loading a certain resource
+    };
+    reader.readAsDataURL(file);
   }
 
   onSavePost() {
