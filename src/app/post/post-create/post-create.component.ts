@@ -4,6 +4,7 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 
 import { PostsService } from "../posts.service";
 import { Post } from "../post.model";
+import { mimeType } from "./mime-type.validator";
 
 @Component({
   selector: "app-post-create",
@@ -33,7 +34,7 @@ export class PostCreateComponent implements OnInit {
       content: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      image: new FormControl(null, {validators: [Validators.required]})
+      image: new FormControl(null, {validators: [Validators.required], asyncValidators: [mimeType]})
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("postId")) {
@@ -66,7 +67,7 @@ export class PostCreateComponent implements OnInit {
     this.form.get("image").updateValueAndValidity();
     const reader = new FileReader();
     reader.onload = () => {  // use reader and define an onLoad event here, which will just be a function that gets execute it
-      this.imagePreview = <string> reader.result; // this function is excuted when it's done loading a certain resource
+      this.imagePreview = <string> reader.result; // this function is excuted when it's done loading a certain resource // asynchronous
     };
     reader.readAsDataURL(file);
   }
