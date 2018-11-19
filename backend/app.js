@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Post = require('./models/post');
 const postsRoutes = require('./routes/posts');
+const multer = require("./models/post");
 
 mongoose.connect("mongodb+srv://taipham:HqT79pa8qQVFOvkM@cluster0-h7kvi.mongodb.net/test?retryWrites=true")
     .then(() => {

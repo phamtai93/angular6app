@@ -34,7 +34,10 @@ export class PostCreateComponent implements OnInit {
       content: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
       }),
-      image: new FormControl(null, {validators: [Validators.required], asyncValidators: [mimeType]})
+      image: new FormControl(null, {
+        validators: [Validators.required],
+        asyncValidators: [mimeType]
+      })
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("postId")) {
@@ -63,11 +66,12 @@ export class PostCreateComponent implements OnInit {
 
   onImagePicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0];
-    this.form.patchValue({image: file});
+    this.form.patchValue({ image: file });
     this.form.get("image").updateValueAndValidity();
     const reader = new FileReader();
-    reader.onload = () => {  // use reader and define an onLoad event here, which will just be a function that gets execute it
-      this.imagePreview = <string> reader.result; // this function is excuted when it's done loading a certain resource // asynchronous
+    reader.onload = () => {
+      // use reader and define an onLoad event here, which will just be a function that gets execute it
+      this.imagePreview = <string>reader.result; // this function is excuted when it's done loading a certain resource // asynchronous
     };
     reader.readAsDataURL(file);
   }
@@ -78,7 +82,11 @@ export class PostCreateComponent implements OnInit {
     }
     this.isLoading = true;
     if (this.mode === "create") {
-      this.postsService.addPost(this.form.value.title, this.form.value.content);
+      this.postsService.addPost(
+        this.form.value.title,
+        this.form.value.content,
+        this.form.value.image
+      );
     } else {
       this.postsService.updatePost(
         this.postId,
