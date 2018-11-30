@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const Post = require('./models/post');
 const postsRoutes = require('./routes/posts');
 const multer = require("./models/post");
+const path = require("path");
 
 mongoose.connect("mongodb+srv://taipham:HqT79pa8qQVFOvkM@cluster0-h7kvi.mongodb.net/test?retryWrites=true")
     .then(() => {
@@ -32,6 +33,7 @@ app.use((error, req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
+app.use("/images", express.static(path.join("backend/images")));
 
 app.use(morgan('dev'));
 

@@ -11,7 +11,7 @@ import { OnDestroy } from "@angular/core/src/metadata/lifecycle_hooks";
 })
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
-  isloading = false;
+  isLoading = false;
   private postsSub: Subscription;
 
   comment: string[] = ["first", "second"];
@@ -19,12 +19,12 @@ export class PostListComponent implements OnInit, OnDestroy {
   constructor(public postsService: PostsService) {}
 
   ngOnInit() {
-    this.isloading = true;
+    this.isLoading = true;
     this.postsService.getPosts();
     this.postsSub = this.postsService
       .getPostUpdateListener()
       .subscribe((posts: Post[]) => {
-        this.isloading = false;
+        this.isLoading = false;
         this.posts = posts;
       });
   }
