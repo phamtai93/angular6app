@@ -41,10 +41,10 @@ export class PostsService {
   getPost(id: string) {
     // return {...this.posts.find(p => p.id === id)};
     return this.http.get<{
-      _id: string;
-      title: string;
-      content: string;
-      imagePath: string;
+      _id: string,
+      title: string,
+      content: string,
+      imagePath: string
     }>("http://localhost:3000/api/posts/" + id);
   }
 
@@ -71,14 +71,24 @@ export class PostsService {
       });
   }
 
-  updatePost(id: string, title: string, content: string, image: File) {
+  updatePost(id: string, title: string, content: string, image: File | string) {
     console.log("update post service !");
-    const postData = new FormData();
-    postData.append("id", id);
-    postData.append("title", title);
-    postData.append("content", content);
-    postData.append("image", image, title);
-    const post: Post = { id: id, title: title, content: content, imagePath: null };
+    let postData: Post | FormData;
+    if (typeof (image) === "object") {
+      postData = new FormData();
+      postData.append("id", id);
+      postData.append("title", title);
+      postData.append("content", content);
+      postData.append("image", image, title);
+    } else {
+      postData = {
+        id: id,
+        title: title,
+        content: content,
+        imagePath: image
+      };
+    }
+
     this.http
       .put<{ message: string; imagePath: string }>(
         "http://localhost:3000/api/posts/" + id,
@@ -87,7 +97,12 @@ export class PostsService {
       .subscribe(responseData => {
         const updatedPosts = [...this.posts]; // this.post is list of old post before updated
         const oldPostIndex = updatedPosts.findIndex(p => p.id === id); // find (the first) position of the post which was update
-        post.imagePath = responseData.imagePath;
+        const post: Post = {
+          id: id,
+          title: title,
+          content: content,
+          imagePath: responseData.imagePath
+        };
         updatedPosts[oldPostIndex] = post; // replace the updated post with new post
         this.posts = updatedPosts;
         this.postsUpdated.next([...this.posts]);
