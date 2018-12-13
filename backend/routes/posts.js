@@ -52,18 +52,28 @@ router.post(
 
 router.get("", (req, res, next) => {
   console.log(req.query);
-  const pageSize = +req.query.pageSize;
+  const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   const postQuery = Post.find();
+  let fetchedPosts;
   if (pageSize && currentPage) {
     postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
   }
   postQuery.then(documents => {
+    fetchedPosts = documents;
+    return Post.count();
+    // res.status(200).json({
+    //   message: "Posts fetched sucessfully!",
+    //   posts: documents
+    // });
+  }).then(count => {
     res.status(200).json({
       message: "Posts fetched sucessfully!",
-      posts: documents
+      posts: fetchedPosts,
+      maxCount: count
     });
-  });
+  })
+  ;
 });
 
 router.get("/:id", (req, res, next) => {

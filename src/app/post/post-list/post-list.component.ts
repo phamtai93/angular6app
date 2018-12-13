@@ -4,6 +4,7 @@ import { PostsService } from "../posts.service";
 import { Subscription } from "rxjs";
 import { OnDestroy } from "@angular/core/src/metadata/lifecycle_hooks";
 import { PageEvent } from "@angular/material";
+import { post } from "selenium-webdriver/http";
 
 @Component({
   selector: "app-post-list",
@@ -16,6 +17,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   totalPosts = 10;
   postsPerPage = 2;
   pageSizeOptions = [1, 2, 5, 10];
+  currentPage = 1;
   private postsSub: Subscription;
 
   comment: string[] = ["first", "second"];
@@ -24,7 +26,7 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.postsService.getPosts();
+    this.postsService.getPosts(this.postsPerPage, this.currentPage);
     this.postsSub = this.postsService
       .getPostUpdateListener()
       .subscribe((posts: Post[]) => {
@@ -34,6 +36,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   onChangedPage(pageData: PageEvent) {
+    this.isLoading = true;
+    this.currentPage = pageData.pageIndex + 1;
+    this.postsPerPage = pageData.pageSize;
+    this.postsService.getPosts(this.postsPerPage, this.currentPage);
     console.log(pageData);
   }
 

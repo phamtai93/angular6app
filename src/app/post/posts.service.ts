@@ -9,28 +9,31 @@ import { stringify } from "@angular/core/src/util";
 @Injectable({ providedIn: "root" })
 export class PostsService {
   private posts: Post[] = [];
-  private postsUpdated = new Subject<Post[]>();
+  private postsUpdated = new Subject<{ post: Post[], postCount: number }>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getPosts() {
+  getPosts(postsPerPage: number, currentPage: number) {
+    const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
+
     this.http
-      .get<{ message: string; posts: any }>("http://localhost:3000/api/posts")
+      .get<{ message: string, posts: any, maxPosts: number }>("http://localhost:3000/api/posts" + queryParams)
       .pipe(
         map(postData => {
-          return postData.posts.map(post => {
+          return { post: postData.posts.map(post => {
             return {
               title: post.title,
               content: post.content,
               id: post._id,
               imagePath: post.imagePath
             };
-          });
+          }), maxPosts: postData.maxPosts
+        };
         })
       )
-      .subscribe(posts => {
-        this.posts = posts;
-        this.postsUpdated.next([...this.posts]);
+      .subscribe(transformedPostData => {
+        this.posts = transformedPostData.post;
+        this.postsUpdated.next({post: [...this.posts], postCount: transformedPostData.maxPosts});
       });
   }
 
