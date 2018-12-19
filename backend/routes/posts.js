@@ -59,7 +59,8 @@ router.get("", (req, res, next) => {
   if (pageSize && currentPage) {
     postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
   }
-  postQuery.then(documents => {
+  postQuery
+    .then(documents => {
     fetchedPosts = documents;
     return Post.count();
     // res.status(200).json({
@@ -70,7 +71,7 @@ router.get("", (req, res, next) => {
     res.status(200).json({
       message: "Posts fetched sucessfully!",
       posts: fetchedPosts,
-      maxCount: count
+      maxPosts: count
     });
   })
   ;
