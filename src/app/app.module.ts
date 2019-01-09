@@ -1,3 +1,4 @@
+import { LoginComponent } from "./auth/login/login.component";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from "@angular/core";
@@ -26,7 +27,8 @@ import { AppRoutingModule } from "src/app/app-routing.module";
     AppComponent,
     PostCreateComponent,
     HeaderComponent,
-    PostListComponent
+    PostListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
