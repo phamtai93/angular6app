@@ -5,10 +5,11 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Post = require('./models/post');
 const postsRoutes = require('./routes/posts');
+const userRoutes = require("./routes/user");
 const multer = require("./models/post");
 const path = require("path");
 
-mongoose.connect("mongodb+srv://taipham:HqT79pa8qQVFOvkM@cluster0-h7kvi.mongodb.net/test?retryWrites=true")
+mongoose.connect("mongodb+srv://taipham:HqT79pa8qQVFOvkM@cluster0-h7kvi.mongodb.net/test")
     .then(() => {
     console.log("connected to database!")
   })
@@ -53,5 +54,6 @@ app.use((req, res, next) => {
 // });
 
 app.use("/api/posts", postsRoutes);
+app.use("/api/user", userRoutes);
 
 module.exports = app;
