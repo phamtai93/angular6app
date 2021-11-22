@@ -7,3 +7,8 @@ const userSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model("User", userSchema);
+
+// test for commit
+// test 2 for commit
+// test 2.2 for commit
+// test 2.3

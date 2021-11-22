@@ -7,3 +7,9 @@ const postSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('Post', postSchema);
+
+// clean
+// t1
+// t2
+// m1
+// m2
